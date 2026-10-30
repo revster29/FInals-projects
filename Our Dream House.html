@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DreamSpace | My Dream House</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #dce8f2;
+    overflow: hidden;
+    color: #263b50;
+}
+
+header {
+    height: 90px;
+    background: #263b50;
+    color: white;
+    text-align: center;
+    padding: 12px;
+}
+
+header h1 {
+    font-size: 26px;
+}
+
+header p {
+    margin-top: 5px;
+    font-size: 13px;
+    color: #d5e5f4;
+}
+
+#scene {
+    height: calc(100vh - 90px);
+    width: 100%;
+    position: relative;
+}
+
+canvas {
+    display: block;
+}
+
+.panel {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    width: 185px;
+    background: rgba(255,255,255,0.96);
+    padding: 14px;
+    border-radius: 13px;
+    box-shadow: 0 4px 15px #0002;
+    z-index: 5;
+    max-height: calc(100% - 30px);
+    overflow-y: auto;
+}
+
+.panel h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.roomBtn {
+    width: 100%;
+    text-align: left;
+    background: white;
+    color: #263b50;
+    border: 1px solid #dce5ed;
+    border-radius: 7px;
+    padding: 9px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.roomBtn:hover,
+.roomBtn.active {
+    background: #dceafa;
+    border-color: #6c9cc6;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #e3e9ef;
+    margin: 12px 0;
+}
+
+.setting {
+    font-size: 12px;
+    margin: 8px 0;
+}
+
+select,
+input[type="color"] {
+    width: 100%;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.mainBtn {
+    background: #263b50;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 13px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.mainBtn:hover {
+    background: #4e9b77;
+}
+
+.controls {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 7px;
+    z-index: 5;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: max-content;
+    max-width: 95%;
+}
+
+#status {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    padding: 10px 14px;
+    background: white;
+    border-radius: 10px;
+    font-size: 12px;
+    z-index: 4;
+}
+
+.hint {
+    font-size: 11px;
+    color: #6d7b87;
+    line-height: 1.5;
+    margin-top: 8px;
+}
+
+@media (max-width: 600px) {
+    header {
+        height: 78px;
+    }
+
+    header h1 {
+        font-size: 20px;
+    }
+
+    #scene {
+        height: calc(100vh - 78px);
+    }
+
+    .panel {
+        width: 155px;
+        padding: 10px;
+        left: 8px;
+        top: 8px;
+    }
+
+    .roomBtn {
+        padding: 7px;
+        font-size: 12px;
+    }
+
+    #status {
+        top: 8px;
+        right: 8px;
+        font-size: 10px;
+    }
+
+    .mainBtn {
+        padding: 9px 10px;
+        font-size: 11px;
+    }
+}
+</style>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+
+<body>
+
+<header>
+    <h1>🏡 DREAMSPACE</h1>
+    <p>My Interactive 3D Dream House Experience</p>
+</header>
+
+<div id="scene">
+
+    <div class="panel">
+        <h3>🏠 Explore Rooms</h3>
+
+        <button class="roomBtn active" data-room="outside">
+            🌳 Outside View
+        </button>
+
+        <button class="roomBtn" data-room="living">
+            🛋️ Living Room
+        </button>
+
+        <button class="roomBtn" data-room="kitchen">
+            🍳 Kitchen
+        </button>
+
+        <button class="roomBtn" data-room="bedroom">
+            🛏️ Bedroom
+        </button>
+
+        <button class="roomBtn" data-room="bathroom">
+            🛁 Bathroom
+        </button>
+
+        <hr>
+
+        <h3>🎨 Customize House</h3>
+
+        <div class="setting">
+            Wall Color
+            <input type="color" id="wallColor" value="#ffe8cb">
+        </div>
+
+        <div class="setting">
+            Furniture Color
+            <input type="color" id="furnitureColor" value="#416c91">
+        </div>
+
+        <div class="setting">
+            Environment
+            <select id="environment">
+                <option value="day">☀️ Daytime</option>
+                <option value="night">🌙 Nighttime</option>
+            </select>
+        </div>
+
+        <hr>
+
+        <button class="mainBtn" id="resetColors">
+            Reset Colors
+        </button>
+
+        <div class="hint">
+            Drag to rotate the view.<br>
+            Scroll to zoom in/out.<br>
+            Select a room to explore.
+        </div>
+    </div>
+
+    <div id="status">Outside View</div>
+
+    <div class="controls">
+        <button class="mainBtn" id="outsideBtn">
+            🏡 Outside
+        </button>
+
+        <button class="mainBtn" id="rotateBtn">
+            🔄 Rotate
+        </button>
+    </div>
+
+</div>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+const container = document.getElementById("scene");
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xcce5fa);
+
+const camera = new THREE.PerspectiveCamera(
+    45,
+    container.clientWidth / container.clientHeight,
+    0.1,
+    300
+);
+
+camera.position.set(15, 13, 19);
+
+const renderer = new THREE.WebGLRenderer({
+    antialias: true
+});
+
+renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+);
+
+renderer.setSize(
+    container.clientWidth,
+    container.clientHeight
+);
+
+renderer.shadowMap.enabled = false;
+container.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(
+    camera,
+    renderer.domElement
+);
+
+controls.target.set(0, 1, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.07;
+controls.minDistance = 2;
+controls.maxDistance = 35;
+controls.maxPolarAngle = Math.PI * 0.49;
+
+const skyLight = new THREE.HemisphereLight(
+    0xffffff, 0x788b6c, 2.1
+);
+
+scene.add(skyLight);
+
+const sun = new THREE.DirectionalLight(
+    0xffffff, 2
+);
+
+sun.position.set(8, 15, 10);
+scene.add(sun);
+
+const materials = {};
+
+function createMaterial(color) {
+    return new THREE.MeshStandardMaterial({
+        color,
+        roughness: 0.85
+    });
+}
+
+materials.wall = createMaterial(0xffe8cb);
+materials.floor = createMaterial(0xd8b58b);
+materials.furniture = createMaterial(0x416c91);
+materials.wood = createMaterial(0x96613d);
+materials.white = createMaterial(0xffffff);
+materials.glass = createMaterial(0x76c9e8);
+materials.grass = createMaterial(0x8dbb82);
+materials.green = createMaterial(0x27834c);
+materials.tile = createMaterial(0xa5dce8);
+materials.dark = createMaterial(0x263b50);
+
+const house = new THREE.Group();
+scene.add(house);
+
+const wallGroup = new THREE.Group();
+house.add(wallGroup);
+
+const furnitureGroup = new THREE.Group();
+house.add(furnitureGroup);
+
+const gardenGroup = new THREE.Group();
+scene.add(gardenGroup);
+
+function addBox(
+    parent,
+    name,
+    x, y, z,
+    w, h, d,
+    material
+) {
+    const mesh = new THREE.Mesh(
+        new THREE.BoxGeometry(w, h, d),
+        material
+    );
+
+    mesh.name = name;
+    mesh.position.set(x, y, z);
+    parent.add(mesh);
+
+    return mesh;
+}
+
+addBox(
+    gardenGroup, "Garden",
+    0, -0.25, 0,
+    50, 0.3, 50,
+    materials.grass
+);
+
+addBox(
+    house, "House Floor",
+    0, 0, 0,
+    12, 0.2, 8,
+    materials.floor
+);
+
+addBox(
+    wallGroup, "Back Wall",
+    0, 1.5, -4,
+    12, 3, 0.18,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Left Wall",
+    -6, 1.5, 0,
+    0.18, 3, 8,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Right Wall",
+    6, 1.5, 0,
+    0.18, 3, 8,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Front Left Wall",
+    -5.4, 1.5, 4,
+    1.2, 3, 0.18,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Front Right Wall",
+    5.4, 1.5, 4,
+    1.2, 3, 0.18,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Bedroom Divider",
+    -1.4, 1.3, -2.2,
+    0.14, 2.6, 3.6,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Bathroom Divider",
+    3.2, 1.3, -2.2,
+    0.14, 2.6, 3.6,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Bedroom Back Partition",
+    -3.8, 1.3, -0.4,
+    4.8, 2.6, 0.14,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Bathroom Back Partition",
+    4.6, 1.3, -0.4,
+    2.6, 2.6, 0.14,
+    materials.wall
+);
+
+addBox(
+    wallGroup, "Left Window",
+    -5.89, 2, -2.4,
+    0.04, 1.1, 1.4,
+    materials.glass
+);
+
+addBox(
+    wallGroup, "Right Window",
+    5.89, 2, -2.4,
+    0.04, 1.1, 1.4,
+    materials.glass
+);
+
+addBox(
+    furnitureGroup, "Living Sofa",
+    -3.9, 0.5, 2.6,
+    2.8, 0.6, 1,
+    materials.furniture
+);
+
+addBox(
+    furnitureGroup, "Sofa Back",
+    -3.9, 0.95, 3.05,
+    2.8, 0.8, 0.2,
+    materials.furniture
+);
+
+addBox(
+    furnitureGroup, "Coffee Table",
+    -3.9, 0.45, 1,
+    1.8, 0.12, 0.9,
+    materials.wood
+);
+
+addBox(
+    furnitureGroup, "TV Stand",
+    -3.9, 0.4, -0.05,
+    1.8, 0.6, 0.5,
+    materials.wood
+);
+
+addBox(
+    furnitureGroup, "TV",
+    -3.9, 1.1, -0.2,
+    1.5, 0.8, 0.12,
+    materials.dark
+);
+
+addBox(
+    furnitureGroup, "Kitchen Cabinets",
+    4.4, 0.55, 2.6,
+    2.4, 1, 0.8,
+    materials.wood
+);
+
+addBox(
+    furnitureGroup, "Kitchen Counter",
+    4.4, 1.1, 2.6,
+    2.5, 0.12, 0.9,
+    materials.white
+);
+
+addBox(
+    furnitureGroup, "Refrigerator",
+    5.2, 1.2, 1.1,
+    0.8, 2.2, 0.8,
+    materials.white
+);
+
+addBox(
+    furnitureGroup, "Dining Table",
+    3.9, 0.85, 0.7,
+    1.5, 0.12, 1,
+    materials.wood
+);
+
+for (const x of [3.3, 4.5]) {
+    for (const z of [0.35, 1.05]) {
+        addBox(
+            furnitureGroup, "Table Leg",
+            x, 0.4, z,
+            0.08, 0.8, 0.08,
+            materials.wood
+        );
+    }
+}
+
+addBox(
+    furnitureGroup, "Bed Frame",
+    -3.9, 0.35, -2.5,
+    2.6, 0.45, 1.6,
+    materials.wood
+);
+
+addBox(
+    furnitureGroup, "Mattress",
+    -3.9, 0.68, -2.5,
+    2.5, 0.25, 1.5,
+    materials.white
+);
+
+addBox(
+    furnitureGroup, "Pillow 1",
+    -4.5, 0.84, -3,
+    0.8, 0.12, 0.4,
+    materials.glass
+);
+
+addBox(
+    furnitureGroup, "Pillow 2",
+    -3.5, 0.84, -3,
+    0.8, 0.12, 0.4,
+    materials.glass
+);
+
+addBox(
+    furnitureGroup, "Wardrobe",
+    -5.1, 1.1, -0.9,
+    0.8, 2.1, 0.8,
+    materials.wood
+);
+
+addBox(
+    furnitureGroup, "Bathroom Floor",
+    4.6, 0.12, -2.4,
+    2.7, 0.06, 2.7,
+    materials.tile
+);
+
+addBox(
+    furnitureGroup, "Bathtub",
+    4.8, 0.4, -2.8,
+    1.4, 0.5, 0.9,
+    materials.white
+);
+
+addBox(
+    furnitureGroup, "Bathroom Sink",
+    3.5, 0.7, -1.2,
+    0.7, 0.7, 0.6,
+    materials.white
+);
+
+addBox(
+    furnitureGroup, "Bathroom Mirror",
+    3.5, 1.55, -1.53,
+    0.7, 0.7, 0.05,
+    materials.glass
+);
+
+addBox(
+    furnitureGroup, "Toilet Base",
+    5.3, 0.3, -1.2,
+    0.65, 0.4, 0.7,
+    materials.white
+);
+
+addBox(
+    furnitureGroup, "Toilet Tank",
+    5.3, 0.65, -1.48,
+    0.65, 0.65, 0.25,
+    materials.white
+);
+
+function addPlant(x, z) {
+    addBox(
+        gardenGroup, "Plant Pot",
+        x, 0.2, z,
+        0.45, 0.4, 0.45,
+        materials.wood
+    );
+
+    const leaves = new THREE.Mesh(
+        new THREE.SphereGeometry(0.5, 12, 12),
+        materials.green
+    );
+
+    leaves.position.set(x, 0.7, z);
+    gardenGroup.add(leaves);
+}
+
+addPlant(-8, 3);
+addPlant(8, 3);
+addPlant(-8, -4);
+addPlant(8, -4);
+
+const rooms = {
+    outside: {
+        position: [15, 13, 19],
+        target: [0, 1, 0]
+    },
+
+    living: {
+        position: [-3.8, 3.5, 7],
+        target: [-3.8, 0.7, 1.8]
+    },
+
+    kitchen: {
+        position: [4.5, 3.8, 6.5],
+        target: [4.3, 0.8, 1.7]
+    },
+
+    bedroom: {
+        position: [-3.8, 3.8, 0.3],
+        target: [-3.8, 0.7, -2.5]
+    },
+
+    bathroom: {
+        position: [4.7, 3.8, 0.3],
+        target: [4.7, 0.7, -2.5]
+    }
+};
+
+let moving = false;
+let progress = 0;
+
+const startPosition = new THREE.Vector3();
+const endPosition = new THREE.Vector3();
+
+const startTarget = new THREE.Vector3();
+const endTarget = new THREE.Vector3();
+
+const rotateBtn = document.getElementById("rotateBtn");
+
+function moveCameraTo(roomName) {
+    const room = rooms[roomName];
+
+    if (!room) return;
+
+    controls.autoRotate = false;
+    rotateBtn.textContent = "🔄 Rotate";
+
+    startPosition.copy(camera.position);
+    endPosition.set(...room.position);
+
+    startTarget.copy(controls.target);
+    endTarget.set(...room.target);
+
+    progress = 0;
+    moving = true;
+
+    document.getElementById("status").textContent =
+        roomName === "outside"
+            ? "Outside View"
+            : roomName.toUpperCase() + " VIEW";
+
+    document.querySelectorAll(".roomBtn").forEach(btn => {
+        btn.classList.toggle(
+            "active",
+            btn.dataset.room === roomName
+        );
+    });
+}
+
+window.goToRoom = moveCameraTo;
+
+document.querySelectorAll(".roomBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        moveCameraTo(btn.dataset.room);
+    });
+});
+
+document.getElementById("outsideBtn")
+    .addEventListener("click", () => {
+        moveCameraTo("outside");
+    });
+
+rotateBtn.addEventListener("click", () => {
+    controls.autoRotate = !controls.autoRotate;
+
+    rotateBtn.textContent = controls.autoRotate
+        ? "⏸ Stop Rotation"
+        : "🔄 Rotate";
+});
+
+document.getElementById("wallColor")
+    .addEventListener("input", event => {
+        materials.wall.color.set(event.target.value);
+    });
+
+document.getElementById("furnitureColor")
+    .addEventListener("input", event => {
+        materials.furniture.color.set(event.target.value);
+    });
+
+const environment = document.getElementById("environment");
+
+environment.addEventListener("change", () => {
+    if (environment.value === "night") {
+        scene.background.set(0x101c38);
+        skyLight.intensity = 0.45;
+        sun.intensity = 0.25;
+    } else {
+        scene.background.set(0xcce5fa);
+        skyLight.intensity = 2.1;
+        sun.intensity = 2;
+    }
+});
+
+document.getElementById("resetColors")
+    .addEventListener("click", () => {
+        materials.wall.color.set(0xffe8cb);
+        materials.furniture.color.set(0x416c91);
+
+        document.getElementById("wallColor").value = "#ffe8cb";
+        document.getElementById("furnitureColor").value = "#416c91";
+
+        environment.value = "day";
+        scene.background.set(0xcce5fa);
+        skyLight.intensity = 2.1;
+        sun.intensity = 2;
+    });
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    if (moving) {
+        progress += 0.025;
+
+        const t = Math.min(progress, 1);
+        const smooth = t * t * (3 - 2 * t);
+
+        camera.position.lerpVectors(
+            startPosition,
+            endPosition,
+            smooth
+        );
+
+        controls.target.lerpVectors(
+            startTarget,
+            endTarget,
+            smooth
+        );
+
+        if (t >= 1) {
+            moving = false;
+        }
+    }
+
+    controls.update();
+    renderer.render(scene, camera);
+}
+
+animate();
+
+window.addEventListener("resize", () => {
+    camera.aspect =
+        container.clientWidth / container.clientHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+        container.clientWidth,
+        container.clientHeight
+    );
+});
+</script>
+</body>
+</html>
