@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -51,7 +52,7 @@ canvas {
     position: absolute;
     top: 15px;
     left: 15px;
-    width: 185px;
+    width: 195px;
     background: rgba(255,255,255,0.96);
     padding: 14px;
     border-radius: 13px;
@@ -64,6 +65,12 @@ canvas {
 .panel h3 {
     font-size: 15px;
     margin-bottom: 10px;
+}
+
+.panel h4 {
+    font-size: 13px;
+    margin: 12px 0 7px;
+    color: #263b50;
 }
 
 .roomBtn {
@@ -96,11 +103,27 @@ hr {
     margin: 8px 0;
 }
 
+.setting label {
+    display: block;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 9px;
+    color: #263b50;
+}
+
 select,
 input[type="color"] {
     width: 100%;
     margin-top: 5px;
     cursor: pointer;
+}
+
+input[type="color"] {
+    height: 30px;
+    border: 1px solid #dce5ed;
+    border-radius: 5px;
+    padding: 2px;
+    background: white;
 }
 
 .mainBtn {
@@ -164,7 +187,7 @@ input[type="color"] {
     }
 
     .panel {
-        width: 155px;
+        width: 165px;
         padding: 10px;
         left: 8px;
         top: 8px;
@@ -190,10 +213,10 @@ input[type="color"] {
 
 <script type="importmap">
 {
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-  }
+    "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
 }
 </script>
 </head>
@@ -201,13 +224,14 @@ input[type="color"] {
 <body>
 
 <header>
-    <h1>🏡 DREAMSPACE</h1>
+    <h1>🏡 DREAMHOUSE</h1>
     <p>My Interactive 3D Dream House Experience</p>
 </header>
 
 <div id="scene">
 
     <div class="panel">
+
         <h3>🏠 Explore Rooms</h3>
 
         <button class="roomBtn active" data-room="outside">
@@ -235,14 +259,119 @@ input[type="color"] {
         <h3>🎨 Customize House</h3>
 
         <div class="setting">
-            Wall Color
+            <label>Wall Color</label>
             <input type="color" id="wallColor" value="#ffe8cb">
+        
+        
         </div>
 
+        <hr>
+
+        <h3>🛋️ Living Room</h3>
+
         <div class="setting">
-            Furniture Color
-            <input type="color" id="furnitureColor" value="#416c91">
+
+            <label>Sofa</label>
+            <input type="color" id="sofaColor" value="#416c91">
+
+            <label>Sofa Back</label>
+            <input type="color" id="sofaBackColor" value="#416c91">
+
+            <label>Coffee Table</label>
+            <input type="color" id="coffeeTableColor" value="#96613d">
+
+            <label>TV Stand</label>
+            <input type="color" id="tvStandColor" value="#96613d">
+
+            <label>TV</label>
+            <input type="color" id="tvColor" value="#263b50">
+
         </div>
+
+        <hr>
+
+        <h3>🍳 Kitchen</h3>
+
+        <div class="setting">
+
+            <label>Kitchen Cabinets</label>
+            <input type="color" id="cabinetsColor" value="#96613d">
+
+            <label>Kitchen Counter</label>
+            <input type="color" id="counterColor" value="#ffffff">
+
+            <label>Refrigerator</label>
+            <input type="color" id="fridgeColor" value="#ffffff">
+
+            <label>Dining Table</label>
+            <input type="color" id="diningColor" value="#96613d">
+
+            <label>Table Legs</label>
+            <input type="color" id="tableLegColor" value="#96613d">
+
+        </div>
+
+        <hr>
+
+        <h3>🛏️ Bedroom</h3>
+
+        <div class="setting">
+
+            <label>Bed Frame</label>
+            <input type="color" id="bedFrameColor" value="#96613d">
+
+            <label>Mattress</label>
+            <input type="color" id="mattressColor" value="#ffffff">
+
+            <label>Pillow 1</label>
+            <input type="color" id="pillow1Color" value="#76c9e8">
+
+            <label>Pillow 2</label>
+            <input type="color" id="pillow2Color" value="#76c9e8">
+
+            <label>Wardrobe</label>
+            <input type="color" id="wardrobeColor" value="#96613d">
+
+        </div>
+
+        <hr>
+
+        <h3>🛁 Bathroom</h3>
+
+        <div class="setting">
+
+            <label>Bathtub</label>
+            <input type="color" id="bathtubColor" value="#ffffff">
+
+            <label>Bathroom Sink</label>
+            <input type="color" id="sinkColor" value="#ffffff">
+
+            <label>Bathroom Mirror</label>
+            <input type="color" id="mirrorColor" value="#76c9e8">
+
+            <label>Toilet Base</label>
+            <input type="color" id="toiletBaseColor" value="#ffffff">
+
+            <label>Toilet Tank</label>
+            <input type="color" id="toiletTankColor" value="#ffffff">
+
+        </div>
+
+        <hr>
+
+        <h3>🌳 Garden</h3>
+
+        <div class="setting">
+
+            <label>Plant Pots</label>
+            <input type="color" id="plantPotColor" value="#96613d">
+
+            <label>Plant Leaves</label>
+            <input type="color" id="plantLeavesColor" value="#27834c">
+
+        </div>
+
+        <hr>
 
         <div class="setting">
             Environment
@@ -261,13 +390,16 @@ input[type="color"] {
         <div class="hint">
             Drag to rotate the view.<br>
             Scroll to zoom in/out.<br>
-            Select a room to explore.
+            Select a room to explore.<br>
+            Customize each furniture color.
         </div>
+
     </div>
 
     <div id="status">Outside View</div>
 
     <div class="controls">
+
         <button class="mainBtn" id="outsideBtn">
             🏡 Outside
         </button>
@@ -275,11 +407,13 @@ input[type="color"] {
         <button class="mainBtn" id="rotateBtn">
             🔄 Rotate
         </button>
+
     </div>
 
 </div>
 
 <script type="module">
+
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -370,6 +504,8 @@ house.add(furnitureGroup);
 const gardenGroup = new THREE.Group();
 scene.add(gardenGroup);
 
+const furnitureMeshes = {};
+
 function addBox(
     parent,
     name,
@@ -377,14 +513,31 @@ function addBox(
     w, h, d,
     material
 ) {
+
     const mesh = new THREE.Mesh(
         new THREE.BoxGeometry(w, h, d),
-        material
+        parent === wallGroup ? material : material.clone()
     );
 
     mesh.name = name;
     mesh.position.set(x, y, z);
     parent.add(mesh);
+
+    if (parent === furnitureGroup) {
+        if (!furnitureMeshes[name]) {
+            furnitureMeshes[name] = [];
+        }
+
+        furnitureMeshes[name].push(mesh);
+    }
+
+    if (parent === gardenGroup && name === "Plant Pot") {
+        if (!furnitureMeshes[name]) {
+            furnitureMeshes[name] = [];
+        }
+
+        furnitureMeshes[name].push(mesh);
+    }
 
     return mesh;
 }
@@ -632,6 +785,7 @@ addBox(
 );
 
 function addPlant(x, z) {
+
     addBox(
         gardenGroup, "Plant Pot",
         x, 0.2, z,
@@ -641,11 +795,17 @@ function addPlant(x, z) {
 
     const leaves = new THREE.Mesh(
         new THREE.SphereGeometry(0.5, 12, 12),
-        materials.green
+        materials.green.clone()
     );
 
     leaves.position.set(x, 0.7, z);
     gardenGroup.add(leaves);
+
+    if (!furnitureMeshes["Plant Leaves"]) {
+        furnitureMeshes["Plant Leaves"] = [];
+    }
+
+    furnitureMeshes["Plant Leaves"].push(leaves);
 }
 
 addPlant(-8, 3);
@@ -654,6 +814,7 @@ addPlant(-8, -4);
 addPlant(8, -4);
 
 const rooms = {
+
     outside: {
         position: [15, 13, 19],
         target: [0, 1, 0]
@@ -692,6 +853,7 @@ const endTarget = new THREE.Vector3();
 const rotateBtn = document.getElementById("rotateBtn");
 
 function moveCameraTo(roomName) {
+
     const room = rooms[roomName];
 
     if (!room) return;
@@ -735,6 +897,7 @@ document.getElementById("outsideBtn")
     });
 
 rotateBtn.addEventListener("click", () => {
+
     controls.autoRotate = !controls.autoRotate;
 
     rotateBtn.textContent = controls.autoRotate
@@ -742,48 +905,167 @@ rotateBtn.addEventListener("click", () => {
         : "🔄 Rotate";
 });
 
-document.getElementById("wallColor")
+    document.getElementById("wallColor")
     .addEventListener("input", event => {
         materials.wall.color.set(event.target.value);
     });
 
-document.getElementById("furnitureColor")
-    .addEventListener("input", event => {
-        materials.furniture.color.set(event.target.value);
-    });
+
+
+
+const furnitureColorSettings = {
+
+    sofaColor: "Living Sofa",
+    sofaBackColor: "Sofa Back",
+    coffeeTableColor: "Coffee Table",
+    tvStandColor: "TV Stand",
+    tvColor: "TV",
+
+    cabinetsColor: "Kitchen Cabinets",
+    counterColor: "Kitchen Counter",
+    fridgeColor: "Refrigerator",
+    diningColor: "Dining Table",
+    tableLegColor: "Table Leg",
+
+    bedFrameColor: "Bed Frame",
+    mattressColor: "Mattress",
+    pillow1Color: "Pillow 1",
+    pillow2Color: "Pillow 2",
+    wardrobeColor: "Wardrobe",
+
+    bathtubColor: "Bathtub",
+    sinkColor: "Bathroom Sink",
+    mirrorColor: "Bathroom Mirror",
+    toiletBaseColor: "Toilet Base",
+    toiletTankColor: "Toilet Tank",
+
+    plantPotColor: "Plant Pot",
+    plantLeavesColor: "Plant Leaves"
+};
+
+Object.entries(furnitureColorSettings).forEach(
+    ([inputId, furnitureName]) => {
+
+        const picker = document.getElementById(inputId);
+
+        picker.addEventListener("input", event => {
+
+            const furniture = furnitureMeshes[furnitureName];
+
+            if (!furniture) return;
+
+            const color = event.target.value;
+
+            if (Array.isArray(furniture)) {
+
+                furniture.forEach(item => {
+                    item.material.color.set(color);
+                });
+
+            } else {
+
+                furniture.material.color.set(color);
+
+            }
+        });
+    }
+);
 
 const environment = document.getElementById("environment");
 
 environment.addEventListener("change", () => {
+
     if (environment.value === "night") {
+
         scene.background.set(0x101c38);
         skyLight.intensity = 0.45;
         sun.intensity = 0.25;
+
     } else {
+
         scene.background.set(0xcce5fa);
         skyLight.intensity = 2.1;
         sun.intensity = 2;
+
     }
 });
 
 document.getElementById("resetColors")
     .addEventListener("click", () => {
-        materials.wall.color.set(0xffe8cb);
-        materials.furniture.color.set(0x416c91);
 
-        document.getElementById("wallColor").value = "#ffe8cb";
-        document.getElementById("furnitureColor").value = "#416c91";
+        const defaultColors = {
+
+            wallColor: "#ffe8cb",
+
+            sofaColor: "#416c91",
+            sofaBackColor: "#416c91",
+            coffeeTableColor: "#96613d",
+            tvStandColor: "#96613d",
+            tvColor: "#263b50",
+
+            cabinetsColor: "#96613d",
+            counterColor: "#ffffff",
+            fridgeColor: "#ffffff",
+            diningColor: "#96613d",
+            tableLegColor: "#96613d",
+
+            bedFrameColor: "#96613d",
+            mattressColor: "#ffffff",
+            pillow1Color: "#76c9e8",
+            pillow2Color: "#76c9e8",
+            wardrobeColor: "#96613d",
+
+            bathtubColor: "#ffffff",
+            sinkColor: "#ffffff",
+            mirrorColor: "#76c9e8",
+            toiletBaseColor: "#ffffff",
+            toiletTankColor: "#ffffff",
+
+            plantPotColor: "#96613d",
+            plantLeavesColor: "#27834c"
+        };
+
+        materials.wall.color.set(defaultColors.wallColor);
+
+        document.getElementById("wallColor").value =
+            defaultColors.wallColor;
+
+        Object.entries(furnitureColorSettings).forEach(
+            ([inputId, furnitureName]) => {
+
+                const color = defaultColors[inputId];
+
+                document.getElementById(inputId).value = color;
+
+                const furniture = furnitureMeshes[furnitureName];
+
+                if (Array.isArray(furniture)) {
+
+                    furniture.forEach(item => {
+                        item.material.color.set(color);
+                    });
+
+                } else if (furniture) {
+
+                    furniture.material.color.set(color);
+
+                }
+            }
+        );
 
         environment.value = "day";
+
         scene.background.set(0xcce5fa);
         skyLight.intensity = 2.1;
         sun.intensity = 2;
     });
 
 function animate() {
+
     requestAnimationFrame(animate);
 
     if (moving) {
+
         progress += 0.025;
 
         const t = Math.min(progress, 1);
@@ -813,6 +1095,7 @@ function animate() {
 animate();
 
 window.addEventListener("resize", () => {
+
     camera.aspect =
         container.clientWidth / container.clientHeight;
 
@@ -823,6 +1106,7 @@ window.addEventListener("resize", () => {
         container.clientHeight
     );
 });
+
 </script>
 </body>
 </html>
